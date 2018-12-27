@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package api;
+
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+
+//option go_package = "github.com/gogo/grpc-example/proto;example";
+
+// Enable custom Marshal method.
+option (gogoproto.marshaler_all) = true;
+// Enable custom Unmarshal method.
+option (gogoproto.unmarshaler_all) = true;
+// Enable custom Size method (Required by Marshal and Unmarshal).
+option (gogoproto.sizer_all) = true;
+// Enable registration with golang/protobuf for the grpc-gateway.
+option (gogoproto.goproto_registration) = true;
+// Enable generation of XXX_MessageName methods for grpc-go/status.
+option (gogoproto.messagename_all) = true;
+
+
+
+option (gogoproto.goproto_stringer_all) = false;
+option (gogoproto.stringer_all) =  true;
+option (gogoproto.goproto_getters_all) = true;
+option (gogoproto.goproto_unrecognized_all) = false;
+
+
+// Registration is the service advertised by the knight agent
+// Only when knight controller answers with a success code to a Register Request
+// may knight agent start their service
+
+service StreamService {
+    rpc Communicate(stream StreamRequest) returns (stream StreamResponse) {
+    }
+}
+
+message StreamRequest {
+    string Name = 1;
+    string Message = 2;
+}
+
+message StreamResponse {
+    string Name = 1;
+    string Message = 2;
+}
